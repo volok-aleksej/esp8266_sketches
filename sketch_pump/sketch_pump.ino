@@ -12,7 +12,7 @@ void onTimerSecond() {
   timerValue++;
   //set rele every 24 hours
   if(timerValue == 86400) {
-    pullRele("");
+    pullRele(twnstd::vector<String>());
     timerValue = 0;
   }
 }
@@ -40,7 +40,7 @@ void usersetup() {
   pinMode(14, OUTPUT);
   digitalWrite(14, LOW);
   
-  CommandLine::GetInstance().AddCommand(CreateCommand("pull", &pullRele));
+  CommandLine::GetInstance().AddCommand(CreateCommand(&pullRele, "pull"));
 }
 
 void mainloop() {

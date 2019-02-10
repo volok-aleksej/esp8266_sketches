@@ -5,6 +5,8 @@ char motion[] = "motion";
 char noMotion[] = "no motion";
 char ligthOff[] = "Ligth OFF";
 char ligthOn[] = "Ligth ON";
+char on[] = "on";
+char off[] = "off";
 
 bool status = false;
 bool sensorValue = false;
@@ -12,14 +14,30 @@ int analogValue;
 bool releStatus = false;
 unsigned long ligthTimeStart = 0;
 
-void onligth(const twnstd::vector<String>& params)
+struct Ligth
 {
-  if(const_cast<twnstd::vector<String>&>(params)[0] == "on") {
-    digitalWrite(12, HIGH);
-  } else if(const_cast<twnstd::vector<String>&>(params)[0] == "off") {
-    digitalWrite(12, LOW);
-  }
-}
+    void doCommand(const twnstd::vector<String>& params)
+    {
+      if(const_cast<twnstd::vector<String>&>(params)[0] == on) {
+        digitalWrite(12, HIGH);
+      } else if(const_cast<twnstd::vector<String>&>(params)[0] == off) {
+        digitalWrite(12, LOW);
+      }
+    }
+
+    twnstd::vector<String> getNextCommandArgs(const twnstd::vector<String>& params, bool& new_word)
+    {
+      twnstd::vector<String> args;
+      if(params.length() <= 1) {
+        args.push_back(on);
+        args.push_back(off);
+        new_word = (params.length() == 0);
+      }
+      return args;
+    }
+};
+
+Ligth onligth;
 
 void printStatus(const twnstd::vector<String>& params)
 {
@@ -72,4 +90,3 @@ void mainloop() {
       }
     }
 }
-
